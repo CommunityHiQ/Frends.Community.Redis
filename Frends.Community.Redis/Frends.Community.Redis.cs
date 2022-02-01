@@ -15,19 +15,17 @@ namespace Frends.Community.Redis
         /// A Frends task for Adding or Updating key-value pairs or a Sets to Redis.
         /// Returns a List of Result-objects that have properties Success and Value.
         /// </summary>
-        /// <param name="insertData">Key-Value pairs or a Set</param>
+        /// <param name="input">Key-Value pairs or a Set</param>
         /// <param name="connection">Connection-options</param>
         /// <param name="options">Additional options for the task</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>A List of Result objects with following properties: bool Success, object Value.</returns>
-        public static List<Result> Add([PropertyTab] InsertInput insertData, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
+        public static List<Result> Add([PropertyTab] AddInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
 
             ConnectionMultiplexer connectionMultiplexer = null;
             List<Result> results = new List<Result>();
-            int minWorker, minIOC;
-            ThreadPool.GetMinThreads(out minWorker, out minIOC);
-
+            setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
             try
@@ -43,9 +41,9 @@ namespace Frends.Community.Redis
 
                 IDatabase database = connectionMultiplexer.GetDatabase();
 
-                if (insertData.InputObjectType == ObjectType.Set)
+                if (input.InputObjectType == ObjectType.Set)
                 {
-                    foreach (var item in insertData.SetInput)
+                    foreach (var item in input.SetInput)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         var _result = database.SetAdd(ObjectToRedisKey(item.Key), item.Value.Select(x => ObjectToRedisValue(x)).ToArray());
@@ -54,7 +52,7 @@ namespace Frends.Community.Redis
                 }
                 else
                 {
-                    foreach (var item in insertData.KeyValuePairInput)
+                    foreach (var item in input.KeyValuePairInput)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
                         var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TTL, item.GetWhen());
@@ -79,22 +77,15 @@ namespace Frends.Community.Redis
         /// <param name="options">Additional options for the task</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List &lt;object&gt;</returns>
-        public static List<object> Get([PropertyTab] GetValuesInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
+        public static List<object> Get([PropertyTab] GetInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
             ConnectionMultiplexer connectionMultiplexer = null;
             List<object> results = new List<object>();
-            int minWorker, minIOC;
-            ThreadPool.GetMinThreads(out minWorker, out minIOC);
-
+            setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
             try
             {
-                if (minWorker < options.Workers || minIOC < options.IOCs)
-                {
-                    ThreadPool.SetMinThreads(options.Workers, options.IOCs);
-                }
-
                 if (connection.UseCachedConnection)
                 {
                     connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
@@ -148,9 +139,7 @@ namespace Frends.Community.Redis
         public static Result Remove([PropertyTab] DeleteInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
             ConnectionMultiplexer connectionMultiplexer = null;
-            int minWorker, minIOC;
-            ThreadPool.GetMinThreads(out minWorker, out minIOC);
-
+            setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
             try
@@ -196,9 +185,7 @@ namespace Frends.Community.Redis
         public static IEnumerable<string> Command(string command, object[] parameters, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
             ConnectionMultiplexer connectionMultiplexer = null;
-            int minWorker, minIOC;
-            ThreadPool.GetMinThreads(out minWorker, out minIOC);
-
+            setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
             try
@@ -267,6 +254,17 @@ namespace Frends.Community.Redis
                     return (RedisValue)strVal;
                 default:
                     throw new ArgumentException("Could not convert key to correct format. Accepted types are int32, int64, byte[], double, boolean or string");
+            }
+        }
+
+        private static void setMinValue(Options options)
+        {
+            int minWorker, minIOC;
+            ThreadPool.GetMinThreads(out minWorker, out minIOC);
+
+            if (minWorker < options.Workers || minIOC < options.IOCs)
+            {
+                ThreadPool.SetMinThreads(options.Workers, options.IOCs);
             }
         }
     }

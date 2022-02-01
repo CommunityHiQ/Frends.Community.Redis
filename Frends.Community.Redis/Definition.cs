@@ -11,6 +11,7 @@ namespace Frends.Community.Redis
     /// Input-object
     /// </summary>
     public enum ObjectType { KeyValuePair, Set }
+
     /// <summary>
     /// When value exists
     /// </summary>
@@ -19,7 +20,7 @@ namespace Frends.Community.Redis
     /// <summary>
     /// Insert input-object 
     /// </summary>
-    public class InsertInput
+    public class AddInput
     {
         /// <summary>
         /// Type of inserted object
@@ -40,7 +41,7 @@ namespace Frends.Community.Redis
     /// <summary>
     /// Get values input
     /// </summary>
-    public class GetValuesInput
+    public class GetInput
     {
         /// <summary>
         /// Object type

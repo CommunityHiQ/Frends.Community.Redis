@@ -8,10 +8,16 @@ using System.Text;
 
 namespace Frends.Community.Redis
 {
+    /// <summary>
+    /// Contains Redis connection implementations.
+    /// </summary>
     public sealed class RedisConnectionFactory : IDisposable
     {
         private static readonly Lazy<RedisConnectionFactory> instanceHolder = new Lazy<RedisConnectionFactory>(() => new RedisConnectionFactory());
 
+        /// <summary>
+        /// The connection holder.
+        /// </summary>
         public static RedisConnectionFactory Instance
         {
             get { return instanceHolder.Value; }
@@ -26,6 +32,12 @@ namespace Frends.Community.Redis
 
         }
 
+        /// <summary>
+        /// Fetches the cached connection.
+        /// </summary>
+        /// <param name="connectionString">The connection string to Redis db.</param>
+        /// <param name="timeout">Timeout threshold for the connection.</param>
+        /// <returns></returns>
         public ConnectionMultiplexer GetCachedRedisConnectionFactory(string connectionString, TimeSpan timeout)
         {
             string key = $"{timeout.TotalSeconds}-{connectionString}";
@@ -52,7 +64,7 @@ namespace Frends.Community.Redis
 
 
         private bool _disposedValue = false;
-        public void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {
@@ -79,7 +91,9 @@ namespace Frends.Community.Redis
             }
         }
 
-        
+        /// <summary>
+        /// Disposes the current connection.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
