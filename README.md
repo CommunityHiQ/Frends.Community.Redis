@@ -1,12 +1,18 @@
 # Frends.Community.Redis
 
-frends Community Task for Redis
+frends Community Task for Redis.
+The original custom task found in spliitto repo.
 
 [![Actions Status](https://github.com/CommunityHiQ/Frends.Community.Redis/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Community.Redis/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Community.Redis) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
 - [Installing](#installing)
 - [Tasks](#tasks)
-     - [Redis](#Redis)
+     - [Add](#Add)
+       - [KeyValuePairInput](#KeyValuePairInput)
+       - [SetInput](#SetInput)
+     - [Get](#Get)
+     - [Remove](#Remove)
+     - [Command](#Command)
 - [Building](#building)
 - [Contributing](#contributing)
 - [Change Log](#change-log)
@@ -18,35 +24,57 @@ https://www.myget.org/F/frends-community/api/v3/index.json and in Gallery view i
 
 # Tasks
 
-## Redis
+## Add
 
-Repeats a message
+A task for adding and updating key-value pairs or a Sets to Redis.
 
-### Properties
+### Input
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Message | `string` | Some string that will be repeated. | `foo` |
+| ObjectType | `Enum<KeyValuePair, Set>` | Choose the type how values are stored to Redis. | `KeyValuePair` |
+| KeyValuePairInput | Array of `KeyValuePairInput` | Pairs to be stored in Redis. | See below |
+| SetInput | Array of `SetInput` | Sets to be stored in Redis. | See below |
+
+#### KeyValuePairInput
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Key | `object` | The chosen key for the key-value pair. | `myvalues` |
+| Value | `object` | An object containing the values to be stored. | `"[{\"id\":201,\"name\":\"SkiBussi 1 GPS\",\"direction\":-1,\"geolocation\":{\"lat\":67.8045555581415,\"lon\":24.8096944500295},\"route\":2}]"` |
+| TimeToLive | `TimeSpan` | TimeToLive limit for the value. |  |
+| ValueExists | `Enum<InsertAlways, InsertOnlyIfValueExists, InsertOnlyIfValueDoesNotExist>` | What to do when value exists. | `InsertAlways` |
+
+#### SetInput
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Key | `object` | The chosen key for the set of values. | `myvalues` |
+| Value | Array of `object` | An array of values to be stored. | `"[{\"id\":201,\"name\":\"SkiBussi 1 GPS\",\"direction\":-1,\"geolocation\":{\"lat\":67.8045555581415,\"lon\":24.8096944500295},\"route\":2}]"` |
+
+### Connection
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| ConnectionString | `string` | The connection string to Redis db. | `contoso5.redis.cache.windows.net,ssl=true,password=password` |
+| Timeout | `int` | Timeout threshold for the connection in seconds. | `60` |
+| UseCachedConnection | `bool` | Use cached connection for the task? | `true` |
 
 ### Options
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Amount | `int` | Amount how many times message is repeated. | `3` |
-| Delimiter | `string` | Character(s) used between replications. | `, ` |
+| Workers | `int` | The minimum number of worker threads to be used. Only applied if larger than default. | `3` |
+| IOCs | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
 
 ### Returns
 
-A result object with parameters.
+For each key-value pair or set, the task returns a list of result objects with following properties:
 
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
-| Replication | `string` | Repeated string. | `foo, foo, foo` |
-
-Usage:
-To fetch result use syntax:
-
-`#result.Replication`
+| Success | `bool` | Tells whether or not the insert succeeded. | `true` |
+| Value | `object` | Key for the object that was to be inserted to db. | `myvalues` |
 
 # Building
 
@@ -81,4 +109,4 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 | Version | Changes |
 | ------- | ------- |
-| 0.0.1   | Development still going on |
+| 1.0.1   | Initial overhaul from custom task to Community task. |

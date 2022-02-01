@@ -14,7 +14,7 @@ namespace Frends.Community.Redis
         /// <summary>
         /// A Frends task for adding and updating key-value pairs or a Sets to Redis.
         /// Returns a List of Result-objects that have properties Success and Value.
-        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Add
         /// </summary>
         /// <param name="input">Key-Value pairs or a Set</param>
         /// <param name="connection">Connection-options</param>
@@ -72,7 +72,7 @@ namespace Frends.Community.Redis
 
         /// <summary>
         /// A Frends task for getting Key-Values or Sets from Redis.
-        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Get
         /// </summary>
         /// <param name="input">An array of keys for key-value pairs or a key to a set</param>
         /// <param name="connection">Connection-options</param>
@@ -132,7 +132,7 @@ namespace Frends.Community.Redis
         /// A Frends task for removing Key-Value pairs or Set values from Redis. 
         /// Returns a Result-object with properties Success and Value. 
         /// Value tells how many cache objects were removed.
-        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Remove
         /// </summary>
         /// <param name="input">Keys or set values to be removed. For removal of a whole set, use key-value and the set key</param>
         /// <param name="connection">Connection-options</param>
@@ -178,7 +178,7 @@ namespace Frends.Community.Redis
 
         /// <summary>
         /// A Frends task for sending commands to Redis. Returns a list that has the output result.
-        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Command
         /// </summary>
         /// <param name="command">Redis command</param>
         /// <param name="parameters">parameters for command</param>
