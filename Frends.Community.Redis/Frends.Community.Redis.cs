@@ -12,14 +12,15 @@ namespace Frends.Community.Redis
     public static class Redis
     {
         /// <summary>
-        /// A Frends task for Adding or Updating key-value pairs or a Sets to Redis.
+        /// A Frends task for adding and updating key-value pairs or a Sets to Redis.
         /// Returns a List of Result-objects that have properties Success and Value.
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
         /// </summary>
         /// <param name="input">Key-Value pairs or a Set</param>
         /// <param name="connection">Connection-options</param>
         /// <param name="options">Additional options for the task</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>A List of Result objects with following properties: bool Success, object Value.</returns>
+        /// <returns>List [ Object { bool Success, object Value } ]</returns>
         public static List<Result> Add([PropertyTab] AddInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
 
@@ -55,7 +56,7 @@ namespace Frends.Community.Redis
                     foreach (var item in input.KeyValuePairInput)
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TTL, item.GetWhen());
+                        var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TimeToLive, item.GetWhen());
                         results.Add(new Result() { Success = (bool)_result, Value = item.Key });
                     }
                 }
@@ -70,7 +71,8 @@ namespace Frends.Community.Redis
         }
 
         /// <summary>
-        /// A Frends task for getting Key-Values or Sets from Redis
+        /// A Frends task for getting Key-Values or Sets from Redis.
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
         /// </summary>
         /// <param name="input">An array of keys for key-value pairs or a key to a set</param>
         /// <param name="connection">Connection-options</param>
@@ -129,7 +131,8 @@ namespace Frends.Community.Redis
         /// <summary>
         /// A Frends task for removing Key-Value pairs or Set values from Redis. 
         /// Returns a Result-object with properties Success and Value. 
-        /// Value tells how many cache objects were removed
+        /// Value tells how many cache objects were removed.
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
         /// </summary>
         /// <param name="input">Keys or set values to be removed. For removal of a whole set, use key-value and the set key</param>
         /// <param name="connection">Connection-options</param>
@@ -175,6 +178,7 @@ namespace Frends.Community.Redis
 
         /// <summary>
         /// A Frends task for sending commands to Redis. Returns a list that has the output result.
+        /// See: https://github.com/CommunityHiQ/Frends.Community.Redis
         /// </summary>
         /// <param name="command">Redis command</param>
         /// <param name="parameters">parameters for command</param>

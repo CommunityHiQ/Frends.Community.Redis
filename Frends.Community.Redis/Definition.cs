@@ -27,17 +27,20 @@ namespace Frends.Community.Redis
         /// </summary>
         [DefaultValue(ObjectType.KeyValuePair)]
         public ObjectType InputObjectType { get; set; }
+
         /// <summary>
         /// Key-value pairs to insert
         /// </summary>
         [UIHint(nameof(InputObjectType), "", ObjectType.KeyValuePair)]
         public KeyValuePairInput[] KeyValuePairInput { get; set; }
+
         /// <summary>
         /// Set to insert
         /// </summary>
         [UIHint(nameof(InputObjectType), "", ObjectType.Set)]
         public SetInput[] SetInput { get; set; }
     }
+
     /// <summary>
     /// Get values input
     /// </summary>
@@ -48,12 +51,14 @@ namespace Frends.Community.Redis
         /// </summary>
         [DefaultValue(ObjectType.KeyValuePair)]
         public ObjectType ObjectType { get; set; }
+
         /// <summary>
         /// Keys for Key-Value pairs
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         [UIHint(nameof(ObjectType), "", ObjectType.KeyValuePair)]
         public object[] Key { get; set; }
+
         /// <summary>
         /// Set key
         /// </summary>
@@ -75,11 +80,13 @@ namespace Frends.Community.Redis
         [DisplayFormat(DataFormatString = "Text")]
         [DefaultValue("contoso5.redis.cache.windows.net,ssl=true,password=password")]
         public string ConnectionString { get; set; }
+
         /// <summary>
         /// Timeout for operations in seconds
         /// </summary>
         [DefaultValue(5)]
         public int Timeout { get; set; }
+
         /// <summary>
         /// Should the task use cached connections or create a new connection each time. Recomended value is TRUE
         /// </summary>
@@ -114,15 +121,18 @@ namespace Frends.Community.Redis
         /// Cache key
         /// </summary>
         public object Key { get; set; }
+
         /// <summary>
         /// Cache Value
         /// </summary>
         public object Value { get; set; }
+
         /// <summary>
         /// Time to live for the object. Can be null/empty if there is no need to set a TTL,
         /// otherwise create a new TimeSpan() with desired values
         /// </summary>      
-        public TimeSpan? TTL { get; set; }
+        public TimeSpan? TimeToLive { get; set; }
+
         /// <summary>
         /// If value exist
         /// </summary>
@@ -154,6 +164,7 @@ namespace Frends.Community.Redis
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         public object Key { get; set; }
+
         /// <summary>
         /// Set values
         /// </summary>
@@ -168,11 +179,13 @@ namespace Frends.Community.Redis
         /// </summary>
         [DefaultValue(ObjectType.KeyValuePair)]
         public ObjectType ObjectType { get; set; }
+
         /// <summary>
         /// Set key and set values to delete
         /// </summary>
         [UIHint(nameof(ObjectType), "", ObjectType.Set)]
         public SetInput SetInput { get; set; }
+
         /// <summary>
         /// Keys for Key-Value pairs to delete
         /// </summary>
@@ -180,6 +193,7 @@ namespace Frends.Community.Redis
         [DisplayFormat(DataFormatString = "Text")]
         public object[] Key { get; set; }
     }
+
     /// <summary>
     /// Output-object
     /// </summary>
@@ -189,6 +203,7 @@ namespace Frends.Community.Redis
         /// Indicates if the operation was successful
         /// </summary>
         public bool Success { get; set; }
+
         /// <summary>
         /// Possible output values that depend on the task
         /// </summary>
