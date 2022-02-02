@@ -1,7 +1,6 @@
 # Frends.Community.Redis
 
 frends Community Task for Redis.
-The original custom task found in spliitto repo.
 
 [![Actions Status](https://github.com/CommunityHiQ/Frends.Community.Redis/workflows/PackAndPushAfterMerge/badge.svg)](https://github.com/CommunityHiQ/Frends.Community.Redis/actions) ![MyGet](https://img.shields.io/myget/frends-community/v/Frends.Community.Redis) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
