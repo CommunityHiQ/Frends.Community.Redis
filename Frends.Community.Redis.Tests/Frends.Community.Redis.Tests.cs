@@ -8,24 +8,12 @@ namespace Frends.Community.Redis.Tests
     {
         /// <summary>
         /// You need to run Frends.Community.Redis.SetPaswordsEnv.ps1 before running unit test, or some other way set environment variables e.g. with GitHub Secrets.
+        /// To do meaningful unit tests, implementation needs to switch to use IConnectionMultiplexer interface instead of the concrete class.
         /// </summary>
         [Test]
-        public void ThreeRediss()
+        public void TestDummy()
         {
-            var input = new Parameters
-            {
-                Message = Environment.GetEnvironmentVariable("EXAMPLE_ENVIROMENT_VARIABLE")
-        };
-
-            var options = new Options
-            {
-                Amount = 3,
-                Delimiter = ", "
-            };
-
-            var ret = Redis.FirstTask(input, options, new System.Threading.CancellationToken());
-
-            Assert.That(ret.Replication, Is.EqualTo("foobar, foobar, foobar"));
+            Assert.IsTrue(true);
         }
     }
 }
