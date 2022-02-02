@@ -265,9 +265,9 @@ namespace Frends.Community.Redis
             int minWorker, minIOC;
             ThreadPool.GetMinThreads(out minWorker, out minIOC);
 
-            if (minWorker < options.Workers || minIOC < options.IOCs)
+            if (minWorker < options.Workers || minIOC < options.InputOutputCompletionPorts)
             {
-                ThreadPool.SetMinThreads(options.Workers, options.IOCs);
+                ThreadPool.SetMinThreads(options.Workers, options.InputOutputCompletionPorts);
             }
         }
     }

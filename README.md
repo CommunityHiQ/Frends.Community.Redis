@@ -65,7 +65,7 @@ A task for adding and updating key-value pairs or Sets to Redis.
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
 | Workers | `int` | The minimum number of worker threads to be used. Only applied if larger than default. | `3` |
-| IOCs | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
+| InputOutputCompletionPorts | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
 
 ### Returns
 

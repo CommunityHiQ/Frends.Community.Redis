@@ -109,7 +109,7 @@ namespace Frends.Community.Redis
         /// Minimum number of asynchronous I/O completion threads
         /// </summary>
         [DefaultValue(1)]
-        public int IOCs { get; set; }
+        public int InputOutputCompletionPorts { get; set; }
     }
 
     /// <summary>
