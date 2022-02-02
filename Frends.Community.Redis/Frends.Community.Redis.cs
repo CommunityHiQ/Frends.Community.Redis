@@ -180,13 +180,12 @@ namespace Frends.Community.Redis
         /// A Frends task for sending commands to Redis. Returns a list that has the output result.
         /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Command
         /// </summary>
-        /// <param name="command">Redis command</param>
-        /// <param name="parameters">parameters for command</param>
+        /// <param name="input">The command and parameters for the task</param>
         /// <param name="connection">Connection-options</param>
         /// <param name="options">Additional options for the task</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>IEnumerable &lt;string&gt;</returns>
-        public static IEnumerable<string> Command(string command, object[] parameters, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
+        public static IEnumerable<string> Command([PropertyTab] CommandInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
             ConnectionMultiplexer connectionMultiplexer = null;
             setMinValue(options);
@@ -205,7 +204,7 @@ namespace Frends.Community.Redis
 
                 IDatabase database = connectionMultiplexer.GetDatabase();
 
-                RedisResult redisResult = database.Execute(command, parameters);
+                RedisResult redisResult = database.Execute(input.Command, input.Parameters);
 
                 if (redisResult.IsNull || redisResult.Type == ResultType.None)
                 {

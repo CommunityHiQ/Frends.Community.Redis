@@ -195,6 +195,22 @@ namespace Frends.Community.Redis
     }
 
     /// <summary>
+    /// Contains input elements for the command task
+    /// </summary>
+    public class CommandInput
+    {
+        /// <summary>
+        /// The command to be executed
+        /// </summary>
+        public string Command { get; set; }
+
+        /// <summary>
+        /// Array of parameters for the command
+        /// </summary>
+        public object[] Parameters { get; set; }
+    }
+
+    /// <summary>
     /// Output-object
     /// </summary>
     public class Result

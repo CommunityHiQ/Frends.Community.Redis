@@ -90,18 +90,11 @@ A task for getting stored data from Redis.
 
 ### Connection
 
-| Property | Type | Description | Example |
-| -------- | -------- | -------- | -------- |
-| ConnectionString | `string` | The connection string to Redis db. | `contoso5.redis.cache.windows.net,ssl=true,password=password` |
-| Timeout | `int` | Timeout threshold for the connection in seconds. | `60` |
-| UseCachedConnection | `bool` | Use cached connection for the task? | `true` |
+For connections settings, see [Connection](#Connection)
 
 ### Options
 
-| Property | Type | Description | Example |
-| -------- | -------- | -------- | -------- |
-| Workers | `int` | The minimum number of worker threads to be used. Only applied if larger than default. | `3` |
-| IOCs | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
+For other settings, see [Options](#Options)
 
 ### Returns
 
@@ -121,18 +114,11 @@ A task for removing wanted data from Redis.
 
 ### Connection
 
-| Property | Type | Description | Example |
-| -------- | -------- | -------- | -------- |
-| ConnectionString | `string` | The connection string to Redis db. | `contoso5.redis.cache.windows.net,ssl=true,password=password` |
-| Timeout | `int` | Timeout threshold for the connection in seconds. | `60` |
-| UseCachedConnection | `bool` | Use cached connection for the task? | `true` |
+For connections settings, see [Connection](#Connection)
 
 ### Options
 
-| Property | Type | Description | Example |
-| -------- | -------- | -------- | -------- |
-| Workers | `int` | The minimum number of worker threads to be used. Only applied if larger than default. | `3` |
-| IOCs | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
+For other settings, see [Options](#Options)
 
 ### Returns
 
@@ -146,6 +132,25 @@ For each key-value pair or set, the task returns a list of result objects with f
 ## Command
 
 A task for executing commands on Redis.
+
+### Input
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Command | `string` | The command to be executed. | `PING` |
+| Parameters | `object[]` | The array of parameters for the command. | `["useless_param"]` |
+
+### Connection
+
+For connections settings, see [Connection](#Connection)
+
+### Options
+
+For other settings, see [Options](#Options)
+
+### Returns
+
+Task returns `IEnumerable<string>` that contains the results of the command.
 
 # Building
 
