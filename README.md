@@ -85,8 +85,8 @@ A task for getting stored data from Redis.
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
 | ObjectType | `Enum<KeyValuePair, Set>` | Choose the type how values are stored in Redis. | `KeyValuePair` |
-| Key | `object[]` | Array of keys for key-value pairs to fetch. | ["myvalue"] |
-| SetKey | `object` | The key for the set to fetch. | "myvalue" |
+| Key | `object[]` | Array of keys for key-value pairs to fetch. | `["myvalue"]` |
+| SetKey | `object` | The key for the set to fetch. | `"myvalue"` |
 
 ### Connection
 
@@ -110,6 +110,42 @@ Task returns a `List<object>` of stored values.
 ## Remove
 
 A task for removing wanted data from Redis.
+
+### Input
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| ObjectType | `Enum<KeyValuePair, Set>` | Choose the type how values are stored in Redis. | `KeyValuePair` |
+| Key | `object[]` | Array of keys for key-value pairs to fetch. | `["myvalue"]` |
+| SetInput | `SetInput` | Set values to be removed. For more info, see [SetInput](#SetInput). | `""` |
+
+### Connection
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| ConnectionString | `string` | The connection string to Redis db. | `contoso5.redis.cache.windows.net,ssl=true,password=password` |
+| Timeout | `int` | Timeout threshold for the connection in seconds. | `60` |
+| UseCachedConnection | `bool` | Use cached connection for the task? | `true` |
+
+### Options
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Workers | `int` | The minimum number of worker threads to be used. Only applied if larger than default. | `3` |
+| IOCs | `int` | The minimum number of asynchronous I/O completion threads to be used. Only applied if larger than default. | `6` |
+
+### Returns
+
+For each key-value pair or set, the task returns a list of result objects with following properties:
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Success | `bool` | Tells whether or not the deletion succeeded. | `true` |
+| Value | `object` | The number of removed objects. | `10` |
+
+## Command
+
+A task for executing commands on Redis.
 
 # Building
 
