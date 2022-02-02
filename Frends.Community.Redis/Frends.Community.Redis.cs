@@ -177,7 +177,7 @@ namespace Frends.Community.Redis
         }
 
         /// <summary>
-        /// A Frends task for sending commands to Redis. Returns a list that has the output result.
+        /// A Frends task for executing commands on Redis. Returns a list that has the results.
         /// See: https://github.com/CommunityHiQ/Frends.Community.Redis#Command
         /// </summary>
         /// <param name="input">The command and parameters for the task</param>
