@@ -194,3 +194,4 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 | 1.0.1   | Initial overhaul from custom task to Community task. Added option settings for thread min values. Added remark about unit tests. |
 | 1.0.2   | Renamed the property for IOCs. |
 | 1.0.3   | ToJToken() added to result objects. |
+| 1.0.4   | Downgraded Newtonsoft.Json to 12.0.0.0 |
