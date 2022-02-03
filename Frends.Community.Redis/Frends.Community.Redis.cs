@@ -29,41 +29,34 @@ namespace Frends.Community.Redis
             setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
-            try
+            if (connection.UseCachedConnection)
             {
-                if (connection.UseCachedConnection)
-                {
-                    connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-                else
-                {
-                    connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
+                connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
+            else
+            {
+                connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
 
-                IDatabase database = connectionMultiplexer.GetDatabase();
+            IDatabase database = connectionMultiplexer.GetDatabase();
 
-                if (input.InputObjectType == ObjectType.Set)
+            if (input.InputObjectType == ObjectType.Set)
+            {
+                foreach (var item in input.SetInput)
                 {
-                    foreach (var item in input.SetInput)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var _result = database.SetAdd(ObjectToRedisKey(item.Key), item.Value.Select(x => ObjectToRedisValue(x)).ToArray());
-                        results.Add(new Result() { Success = (long)_result > -1, Value = item.Key });
-                    }
-                }
-                else
-                {
-                    foreach (var item in input.KeyValuePairInput)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TimeToLive, item.GetWhen());
-                        results.Add(new Result() { Success = (bool)_result, Value = item.Key });
-                    }
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var _result = database.SetAdd(ObjectToRedisKey(item.Key), item.Value.Select(x => ObjectToRedisValue(x)).ToArray());
+                    results.Add(new Result() { Success = (long)_result > -1, Value = item.Key });
                 }
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                foreach (var item in input.KeyValuePairInput)
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TimeToLive, item.GetWhen());
+                    results.Add(new Result() { Success = (bool)_result, Value = item.Key });
+                }
             }
 
             return results;
@@ -86,44 +79,38 @@ namespace Frends.Community.Redis
             setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
-            try
+            if (connection.UseCachedConnection)
             {
-                if (connection.UseCachedConnection)
-                {
-                    connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-                else
-                {
-                    connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
+                connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
+            else
+            {
+                connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
 
-                IDatabase database = connectionMultiplexer.GetDatabase();
+            IDatabase database = connectionMultiplexer.GetDatabase();
 
-                RedisValue[] redisValues;
+            RedisValue[] redisValues;
 
-                if (input.ObjectType == ObjectType.KeyValuePair)
+            if (input.ObjectType == ObjectType.KeyValuePair)
+            {
+                redisValues = database.StringGet(input.Key.Select(key => ObjectToRedisKey(key)).ToArray());
+            }
+            else
+            {
+                redisValues = database.SetMembers(ObjectToRedisKey(input.SetKey));
+            }
+
+            foreach (RedisValue value in redisValues)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (value.HasValue)
                 {
-                    redisValues = database.StringGet(input.Key.Select(key => ObjectToRedisKey(key)).ToArray());
-                }
-                else
-                {
-                    redisValues = database.SetMembers(ObjectToRedisKey(input.SetKey));
-                }
-
-                foreach (RedisValue value in redisValues)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
-
-                    if (value.HasValue)
-                    {
-                        results.Add(value);
-                    }
+                    results.Add(value);
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+
             return results;
         }
 
@@ -145,34 +132,26 @@ namespace Frends.Community.Redis
             setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
-            try
+            if (connection.UseCachedConnection)
             {
-                if (connection.UseCachedConnection)
-                {
-                    connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-                else
-                {
-                    connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-
-                IDatabase database = connectionMultiplexer.GetDatabase();
-
-                if (input.ObjectType == ObjectType.KeyValuePair)
-                {
-                    var _result = database.KeyDelete(input.Key.Select(key => ObjectToRedisKey(key)).ToArray());
-                    return new Result { Success = _result > -1, Value = _result };
-                }
-                else
-                {
-                    var _result = database.SetRemove(ObjectToRedisKey(input.SetInput.Key), input.SetInput.Value.Select(value => ObjectToRedisValue(value)).ToArray());
-                    return new Result() { Success = _result > -1, Value = _result };
-                }
+                connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
+            else
+            {
+                connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
             }
 
-            catch (Exception ex)
+            IDatabase database = connectionMultiplexer.GetDatabase();
+
+            if (input.ObjectType == ObjectType.KeyValuePair)
             {
-                throw ex;
+                var _result = database.KeyDelete(input.Key.Select(key => ObjectToRedisKey(key)).ToArray());
+                return new Result { Success = _result > -1, Value = _result };
+            }
+            else
+            {
+                var _result = database.SetRemove(ObjectToRedisKey(input.SetInput.Key), input.SetInput.Value.Select(value => ObjectToRedisValue(value)).ToArray());
+                return new Result() { Success = _result > -1, Value = _result };
             }
         }
 
@@ -191,40 +170,33 @@ namespace Frends.Community.Redis
             setMinValue(options);
             cancellationToken.ThrowIfCancellationRequested();
 
-            try
+            if (connection.UseCachedConnection)
             {
-                if (connection.UseCachedConnection)
-                {
-                    connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-                else
-                {
-                    connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
-                }
-
-                IDatabase database = connectionMultiplexer.GetDatabase();
-
-                RedisResult redisResult = database.Execute(input.Command, input.Parameters);
-
-                if (redisResult.IsNull || redisResult.Type == ResultType.None)
-                {
-                    return new List<string>();
-                }
-
-                switch (redisResult.Type)
-                {
-                    case ResultType.BulkString:
-                        return (IEnumerable<string>)redisResult.ToString().Split('\n');
-                    case ResultType.SimpleString:
-                    case ResultType.Integer:
-                        return new List<string>() { redisResult.ToString() };
-                    default:
-                        return new List<string>(redisResult.ToDictionary().SelectMany(keyVal => new List<string>() { keyVal.Key.ToString(), keyVal.Value.ToString() }));
-                }
+                connectionMultiplexer = RedisConnectionFactory.Instance.GetCachedRedisConnectionFactory(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
             }
-            catch (Exception ex)
+            else
             {
-                throw ex;
+                connectionMultiplexer = RedisConnectionFactory.CreateConnectionWithTimeout(connection.ConnectionString, new TimeSpan(0, 0, connection.Timeout));
+            }
+
+            IDatabase database = connectionMultiplexer.GetDatabase();
+
+            RedisResult redisResult = database.Execute(input.Command, input.Parameters);
+
+            if (redisResult.IsNull || redisResult.Type == ResultType.None)
+            {
+                return new List<string>();
+            }
+
+            switch (redisResult.Type)
+            {
+                case ResultType.BulkString:
+                    return (IEnumerable<string>)redisResult.ToString().Split('\n');
+                case ResultType.SimpleString:
+                case ResultType.Integer:
+                    return new List<string>() { redisResult.ToString() };
+                default:
+                    return new List<string>(redisResult.ToDictionary().SelectMany(keyVal => new List<string>() { keyVal.Key.ToString(), keyVal.Value.ToString() }));
             }
         }
         private static RedisKey ObjectToRedisKey(object obj)
