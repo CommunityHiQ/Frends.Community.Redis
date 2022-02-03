@@ -74,6 +74,7 @@ For each key-value pair or set, the task returns a list of result objects with f
 | -------- | -------- | -------- | -------- |
 | Success | `bool` | Tells whether or not the insert succeeded. | `true` |
 | Value | `object` | Key for the object that was to be inserted to db. | `myvalues` |
+| ToJToken() | JToken | Returns the value of `Value` as JToken. | |
 
 ## Get
 
@@ -127,6 +128,7 @@ For each key-value pair or set, the task returns a list of result objects with f
 | -------- | -------- | -------- | -------- |
 | Success | `bool` | Tells whether or not the deletion succeeded. | `true` |
 | Value | `object` | The number of removed objects. | `10` |
+| ToJToken() | JToken | Returns the value of `Value` as JToken. | |
 
 ## Command
 
@@ -186,3 +188,4 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 | ------- | ------- |
 | 1.0.1   | Initial overhaul from custom task to Community task. Added option settings for thread min values. Added remark about unit tests. |
 | 1.0.2   | Renamed the property for IOCs. |
+| 1.0.3   | ToJToken() added to result objects. |
