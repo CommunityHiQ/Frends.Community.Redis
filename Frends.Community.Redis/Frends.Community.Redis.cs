@@ -46,7 +46,7 @@ namespace Frends.Community.Redis
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     var _result = database.SetAdd(ObjectToRedisKey(item.Key), item.Value.Select(x => ObjectToRedisValue(x)).ToArray());
-                    results.Add(new Result() { Success = (long)_result > -1, Value = item.Key });
+                    results.Add(new Result((long)_result > -1, item.Key));
                 }
             }
             else
@@ -55,7 +55,7 @@ namespace Frends.Community.Redis
                 {
                     cancellationToken.ThrowIfCancellationRequested();
                     var _result = database.StringSet(ObjectToRedisKey(item.Key), ObjectToRedisValue(item.Value), item.TimeToLive, item.GetWhen());
-                    results.Add(new Result() { Success = (bool)_result, Value = item.Key });
+                    results.Add(new Result((bool)_result, item.Key));
                 }
             }
 
@@ -146,12 +146,12 @@ namespace Frends.Community.Redis
             if (input.ObjectType == ObjectType.KeyValuePair)
             {
                 var _result = database.KeyDelete(input.Key.Select(key => ObjectToRedisKey(key)).ToArray());
-                return new Result { Success = _result > -1, Value = _result };
+                return new Result(_result > -1, _result);
             }
             else
             {
                 var _result = database.SetRemove(ObjectToRedisKey(input.SetInput.Key), input.SetInput.Value.Select(value => ObjectToRedisValue(value)).ToArray());
-                return new Result() { Success = _result > -1, Value = _result };
+                return new Result(_result > -1, _result);
             }
         }
 

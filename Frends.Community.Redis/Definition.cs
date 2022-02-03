@@ -1,5 +1,6 @@
 ﻿#pragma warning disable 1591
 
+using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using System;
 using System.ComponentModel;
@@ -215,6 +216,19 @@ namespace Frends.Community.Redis
     /// </summary>
     public class Result
     {
+        private readonly Lazy<JToken> _jToken;
+
+        /// <summary>
+        /// Constructor for the result object
+        /// </summary>
+        /// <param name="succeeded">Boolean status if task succeeded.</param>
+        /// <param name="data">Value(s) returned by the Redis task.</param>
+        public Result(bool succeeded, object data)
+        {
+            Success = succeeded;
+            Value = data;
+            _jToken = new Lazy<JToken>(() => JToken.FromObject(Value));
+        }
         /// <summary>
         /// Indicates if the operation was successful
         /// </summary>
@@ -224,5 +238,14 @@ namespace Frends.Community.Redis
         /// Possible output values that depend on the task
         /// </summary>
         public object Value { get; set; }
+
+        /// <summary>
+        /// Returns the result object as JToken
+        /// </summary>
+        /// <returns>JToken</returns>
+        public JToken ToJToken()
+        {
+            return _jToken.Value;
+        }
     }
 }
