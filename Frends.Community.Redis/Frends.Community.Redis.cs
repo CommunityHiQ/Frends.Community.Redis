@@ -90,7 +90,6 @@ namespace Frends.Community.Redis
 
             IDatabase database = connectionMultiplexer.GetDatabase();
 
-            RedisKey[] redisKeys;
             RedisValue[] redisValues;
 
             if (input.ObjectType == ObjectType.KeyValuePair)
