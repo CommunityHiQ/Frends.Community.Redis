@@ -98,7 +98,12 @@ For other settings, see [Options](#Options)
 
 ### Returns
 
-Task returns a `List<object>` of stored values.
+Task returns an object with following properties
+
+| Property | Type | Description | Example |
+| -------- | -------- | -------- | -------- |
+| Values | `List<object>` | List of result objects. | |
+| ToJToken() | JToken | Returns the value of `Values` as JToken. | |
 
 ## Remove
 

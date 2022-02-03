@@ -3,6 +3,7 @@
 using Newtonsoft.Json.Linq;
 using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -238,6 +239,38 @@ namespace Frends.Community.Redis
         /// Possible output values that depend on the task
         /// </summary>
         public object Value { get; set; }
+
+        /// <summary>
+        /// Returns the result object as JToken
+        /// </summary>
+        /// <returns>JToken</returns>
+        public JToken ToJToken()
+        {
+            return _jToken.Value;
+        }
+    }
+
+    /// <summary>
+    /// Output-object
+    /// </summary>
+    public class GetResult
+    {
+        private readonly Lazy<JToken> _jToken;
+
+        /// <summary>
+        /// Constructor for the result object
+        /// </summary>
+        /// <param name="results">Value(s) returned by the Redis task.</param>
+        public GetResult(List<object> results)
+        {
+            Values = results;
+            _jToken = new Lazy<JToken>(() => JToken.FromObject(Values));
+        }
+
+        /// <summary>
+        /// Possible output values that depend on the task
+        /// </summary>
+        public List<object> Values { get; set; }
 
         /// <summary>
         /// Returns the result object as JToken

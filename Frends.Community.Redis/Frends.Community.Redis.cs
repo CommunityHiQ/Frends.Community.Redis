@@ -71,8 +71,8 @@ namespace Frends.Community.Redis
         /// <param name="connection">Connection-options</param>
         /// <param name="options">Additional options for the task</param>
         /// <param name="cancellationToken">Cancellation token</param>
-        /// <returns>List &lt;object&gt;</returns>
-        public static List<object> Get([PropertyTab] GetInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
+        /// <returns>List [ Object { object Key, object Values } ]</returns>
+        public static GetResult Get([PropertyTab] GetInput input, [PropertyTab] Connection connection, [PropertyTab] Options options, CancellationToken cancellationToken)
         {
             ConnectionMultiplexer connectionMultiplexer = null;
             List<object> results = new List<object>();
@@ -90,6 +90,7 @@ namespace Frends.Community.Redis
 
             IDatabase database = connectionMultiplexer.GetDatabase();
 
+            RedisKey[] redisKeys;
             RedisValue[] redisValues;
 
             if (input.ObjectType == ObjectType.KeyValuePair)
@@ -111,7 +112,7 @@ namespace Frends.Community.Redis
                 }
             }
 
-            return results;
+            return new GetResult(results);
         }
 
 
