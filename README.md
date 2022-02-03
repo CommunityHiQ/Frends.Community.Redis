@@ -74,7 +74,7 @@ For each key-value pair or set, the task returns a list of result objects with f
 | -------- | -------- | -------- | -------- |
 | Success | `bool` | Tells whether or not the insert succeeded. | `true` |
 | Value | `object` | Key for the object that was to be inserted to db. | `myvalues` |
-| ToJToken() | JToken | Returns the value of `Value` as JToken. | |
+| ToJToken() | `JToken` | Returns the value of `Value` as JToken. | |
 
 ## Get
 
@@ -103,7 +103,7 @@ Task returns an object with following properties
 | Property | Type | Description | Example |
 | -------- | -------- | -------- | -------- |
 | Values | `List<object>` | List of result objects. | |
-| ToJToken() | JToken | Returns the value of `Values` as JToken. | |
+| ToJToken() | `JToken` | Returns the value of `Values` as JToken. | |
 
 ## Remove
 
@@ -133,7 +133,7 @@ For each key-value pair or set, the task returns a list of result objects with f
 | -------- | -------- | -------- | -------- |
 | Success | `bool` | Tells whether or not the deletion succeeded. | `true` |
 | Value | `object` | The number of removed objects. | `10` |
-| ToJToken() | JToken | Returns the value of `Value` as JToken. | |
+| ToJToken() | `JToken` | Returns the value of `Value` as JToken. | |
 
 ## Command
 
