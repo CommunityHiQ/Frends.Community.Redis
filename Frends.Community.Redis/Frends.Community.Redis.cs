@@ -183,12 +183,12 @@ namespace Frends.Community.Redis
 
             RedisResult redisResult = database.Execute(input.Command, input.Parameters);
 
-            if (redisResult.IsNull || redisResult.Type == ResultType.None)
+            if (redisResult.IsNull || redisResult.Resp2Type == ResultType.None)
             {
                 return new List<string>();
             }
 
-            switch (redisResult.Type)
+            switch (redisResult.Resp2Type)
             {
                 case ResultType.BulkString:
                     return (IEnumerable<string>)redisResult.ToString().Split('\n');
