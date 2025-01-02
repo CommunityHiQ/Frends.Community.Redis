@@ -195,4 +195,4 @@ NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 | 1.0.2   | Renamed the property for IOCs. |
 | 1.0.3   | ToJToken() added to result objects. |
 | 1.0.4   | Downgraded Newtonsoft.Json to 12.0.0.0 |
-| 1.1.0   | Added targeting to .NET6 and .NET8, and updated StackExchange.Redis to 2.8.24 |
+| 1.1.0   | Added targeting to .NET6 and .NET8. Updated StackExchange.Redis to 2.8.24 and downgraded Newtonsoft.Json to 12.0.1.|
