@@ -23,4 +23,4 @@ jobs:
       run: dotnet pack --configuration Release --include-source
       
     - name: Push NuGet package to the testfeed
-      run: dotnet nuget push Frends.Community.Redis\bin\Release\Frends.Community.Redis.*.nupkg  --api-key ${{ secrets.COMMUNITY_FEED_API_KEY }} --source https://www.myget.org/F/frends-community-test/api/v2/package --symbol-source https://www.myget.org/F/frends-community-test/symbols/api/v2/package
+      run: dotnet nuget push Frends.Community.Redis\bin\Release\Frends.Community.Redis.*.nupkg  --api-key ${{ secrets.COMMUNITY_FEED_API_KEY }} --source https://www.myget.org/F/frends-community-test/api/v2/package
