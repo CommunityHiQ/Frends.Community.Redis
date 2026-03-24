@@ -11,6 +11,24 @@
 		},
 		{
 			"TaskMethod": "Frends.Community.Redis.Redis.Command"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.Merge"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.Query"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.CreateIndex"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.DeleteIndex"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.UpdateIndex"
+		},
+		{
+			"TaskMethod": "Frends.Community.Redis.Redis.CreateOrUpdateIndex"
 		}
 	]
 }
